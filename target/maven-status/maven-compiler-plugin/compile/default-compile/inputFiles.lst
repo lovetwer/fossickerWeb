@@ -2,7 +2,9 @@ D:\Project\fossickerWeb\src\main\java\com\fossicker\dto\RegisterDTO.java
 D:\Project\fossickerWeb\src\main\java\com\fossicker\controller\UserController.java
 D:\Project\fossickerWeb\src\main\java\com\fossicker\vo\LoginVO.java
 D:\Project\fossickerWeb\src\main\java\com\fossicker\service\KeepAliveService.java
+D:\Project\fossickerWeb\src\main\java\com\fossicker\repository\AppVersionRepository.java
 D:\Project\fossickerWeb\src\main\java\com\fossicker\repository\UserRepository.java
+D:\Project\fossickerWeb\src\main\java\com\fossicker\controller\AppVersionController.java
 D:\Project\fossickerWeb\src\main\java\com\fossicker\entity\Feedback.java
 D:\Project\fossickerWeb\src\main\java\com\fossicker\config\SchedulingConfig.java
 D:\Project\fossickerWeb\src\main\java\com\fossicker\controller\HelloController.java
@@ -11,6 +13,7 @@ D:\Project\fossickerWeb\src\main\java\com\fossicker\controller\HealthController.
 D:\Project\fossickerWeb\src\main\java\com\fossicker\common\Result.java
 D:\Project\fossickerWeb\src\main\java\com\fossicker\repository\NotificationRepository.java
 D:\Project\fossickerWeb\src\main\java\com\fossicker\controller\CategoryController.java
+D:\Project\fossickerWeb\src\main\java\com\fossicker\entity\AppVersion.java
 D:\Project\fossickerWeb\src\main\java\com\fossicker\entity\Notification.java
 D:\Project\fossickerWeb\src\main\java\com\fossicker\controller\FeedbackController.java
 D:\Project\fossickerWeb\src\main\java\com\fossicker\service\ImageUploadService.java
