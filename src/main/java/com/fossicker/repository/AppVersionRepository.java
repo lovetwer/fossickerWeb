@@ -12,6 +12,8 @@ public interface AppVersionRepository extends JpaRepository<AppVersion, String> 
 
     Optional<AppVersion> findFirstByPlatformAndStatusOrderByVersionCodeDesc(String platform, Integer status);
 
+    List<AppVersion> findByPlatformAndStatus(String platform, Integer status);
+
     List<AppVersion> findByPlatformOrderByCreateTimeDesc(String platform);
 
     List<AppVersion> findAllByOrderByCreateTimeDesc();

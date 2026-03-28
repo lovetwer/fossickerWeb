@@ -2,7 +2,7 @@ package com.fossicker.controller;
 
 import com.fossicker.entity.AppVersion;
 import com.fossicker.repository.AppVersionRepository;
-import com.fossicker.model.Result;
+import com.fossicker.common.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/api/version")
+@RequestMapping("/version")
 public class AppVersionController {
 
     @Autowired
@@ -87,14 +87,20 @@ public class AppVersionController {
 
     @PostMapping("/check")
     public Result checkUpdate(@RequestParam String platform, @RequestParam String versionCode) {
-        Optional<AppVersion> latestVersionOpt = appVersionRepository
-                .findFirstByPlatformAndStatusOrderByVersionCodeDesc(platform, 1);
+        // 获取该平台所有已发布的版本
+        List<AppVersion> versions = appVersionRepository.findByPlatformAndStatus(platform, 1);
 
-        if (latestVersionOpt.isEmpty()) {
+        if (versions.isEmpty()) {
             return Result.success(new UpdateCheckResult(false, false, null, "当前已是最新版本"));
         }
 
-        AppVersion latestVersion = latestVersionOpt.get();
+        // 找出版本号最大的
+        AppVersion latestVersion = versions.get(0);
+        for (AppVersion version : versions) {
+            if (compareVersion(version.getVersionCode(), latestVersion.getVersionCode()) > 0) {
+                latestVersion = version;
+            }
+        }
 
         if (compareVersion(versionCode, latestVersion.getVersionCode()) >= 0) {
             return Result.success(new UpdateCheckResult(false, false, null, "当前已是最新版本"));
@@ -117,19 +123,39 @@ public class AppVersionController {
     }
 
     private int compareVersion(String v1, String v2) {
-        String[] parts1 = v1.split("\\.");
-        String[] parts2 = v2.split("\\.");
+        // 标准化版本号
+        int[] nums1 = parseVersion(v1);
+        int[] nums2 = parseVersion(v2);
 
-        int length = Math.max(parts1.length, parts2.length);
-        for (int i = 0; i < length; i++) {
-            int num1 = i < parts1.length ? Integer.parseInt(parts1[i]) : 0;
-            int num2 = i < parts2.length ? Integer.parseInt(parts2[i]) : 0;
-
+        // 逐段比较
+        int maxLen = Math.max(nums1.length, nums2.length);
+        for (int i = 0; i < maxLen; i++) {
+            int num1 = i < nums1.length ? nums1[i] : 0;
+            int num2 = i < nums2.length ? nums2[i] : 0;
             if (num1 != num2) {
                 return num1 - num2;
             }
         }
         return 0;
+    }
+
+    private int[] parseVersion(String version) {
+        if (version == null || version.isEmpty()) {
+            return new int[]{0};
+        }
+        // 移除前缀 "v" 或 "V"
+        version = version.replaceAll("^[vV]", "");
+        // 按 . 或 - 分割
+        String[] parts = version.split("[.-]");
+        int[] nums = new int[parts.length];
+        for (int i = 0; i < parts.length; i++) {
+            try {
+                nums[i] = Integer.parseInt(parts[i]);
+            } catch (NumberFormatException e) {
+                nums[i] = 0;
+            }
+        }
+        return nums;
     }
 
     public static class UpdateCheckResult {
