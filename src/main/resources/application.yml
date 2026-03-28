@@ -1,0 +1,27 @@
+spring:
+  application:
+    name: fossickerWeb
+  datasource:
+    url: jdbc:postgresql://ep-soft-wildflower-a11qkztz-pooler.ap-southeast-1.aws.neon.tech/neondb?sslmode=require&channel_binding=require
+    username: neondb_owner
+    password: npg_7TUvikGsyE4j
+    driver-class-name: org.postgresql.Driver
+    hikari:
+      connectionTimeout: 30000
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: true
+  devtools:
+    restart:
+      enabled: true
+      additional-paths: src/main/java
+    livereload:
+      enabled: true
+
+server:
+  port: 8080
